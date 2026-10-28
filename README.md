@@ -19,6 +19,16 @@ Built for WolfHacks 2026. The codebase and its contracts still use the working n
 
 If anything fails, the app falls back gracefully and says so on screen: live Databricks first, then saved results, then a built-in fixture. If the AI model is unavailable, a rule-based explanation is used instead, labeled as a fallback.
 
+## Grounding check
+
+Before the AI coach's explanation is shown, `check_grounding()` in
+[`agent/explain.py`](agent/explain.py) verifies that every number and clock
+time in the text appears in an actual tool result or the schedule diff, and
+that all four required sections are present. If the check fails, the LLM's
+text is discarded and a deterministic fallback explanation built only from
+tool results is shown instead; the failure reason is logged in the audit
+trail (see [`agent/agent.py`](agent/agent.py)).
+
 ## Quick start (no accounts or keys needed)
 
 You need Python 3 and Node.js (we used Python 3.14 and Node 22).
